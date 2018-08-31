@@ -4,19 +4,19 @@ Android - 获取手机安装的应用信息（用户应用、系统应用）、�
 
 ### APK 下载
 
-<a href="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdfile/APP%E4%BF%A1%E6%81%AF%E6%8F%90%E5%8F%96%E5%99%A8.apk">APP信息提取器.apk</a>
+<a href="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/APP%E4%BF%A1%E6%81%AF%E6%8F%90%E5%8F%96%E5%99%A8.apk">APP信息提取器.apk</a>
 
 
 ### 预览
 
-<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdfile/img1.png" height="640" width="360"/>&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img2.png" height="640" width="360"/>
+<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img1.png" height="640" width="360"/>&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img2.png" height="640" width="360"/>
 
-<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img3.png" height="640" width="360"/>&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img4.png" height="640" width="360"/>
+<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img3.png" height="640" width="360"/>&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img4.png" height="640" width="360"/>
 
-<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img5.png" height="640" width="360"/>&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img6.png" height="640" width="360"/>
+<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img5.png" height="640" width="360"/>&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img6.png" height="640" width="360"/>
 
-<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img7.png" height="640" width="360"/>&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img8.png" height="640" width="360"/>
+<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img7.png" height="640" width="360"/>&nbsp;&nbsp;<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img8.png" height="640" width="360"/>
 
-<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img9.png" height="640" width="360"/>
+<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img9.png" height="640" width="360"/>
 
-<img src="https://raw.githubusercontent.com/afkT/RecordVideo/master/mdfile/img10.png" height="3276.7" width="480"/>
+<img src="https://raw.githubusercontent.com/afkT/AppInfoPro/master/mdFile/img10.png" height="3276.7" width="480"/>
