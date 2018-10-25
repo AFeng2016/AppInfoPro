@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 
 import java.util.LinkedHashMap;
 
+import dev.utils.app.share.SharedUtils;
 import t.app.info.utils.config.KeyConstants;
-import t.app.info.utils.share.SharedUtils;
 
 /**
  * detail: 搜索后缀 工具类

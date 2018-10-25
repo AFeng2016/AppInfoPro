@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
-import t.app.info.utils.LogPrintUtils;
+import dev.utils.app.logger.DevLogger;
 
 /**
  * detail: Fragment 基类控制方法
@@ -138,7 +138,7 @@ public abstract class IBaseFragment extends Fragment {
      * @param message 打印内容
      */
     private final void printLogPri(String message) {
-        LogPrintUtils.dTag(TAG, "%s -> %s", new Object[] { TAG, message });
+        DevLogger.dTag(TAG, "%s -> %s", new Object[] { TAG, message });
     }
 
     // ============= 对外提供方法 ============

@@ -14,6 +14,12 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.DeviceUtils;
+import dev.utils.app.ScreenUtils;
+import dev.utils.app.SizeUtils;
+import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.toast.ToastUtils;
+import dev.utils.common.FileUtils;
 import t.app.info.R;
 import t.app.info.adapters.DeviceInfoAdapter;
 import t.app.info.base.BaseApplication;
@@ -21,12 +27,6 @@ import t.app.info.base.BaseFragment;
 import t.app.info.base.observer.DevObserverNotify;
 import t.app.info.beans.DeviceInfoBean;
 import t.app.info.beans.item.DeviceInfoItem;
-import t.app.info.utils.DeviceInfoUtils;
-import t.app.info.utils.FileUtils;
-import t.app.info.utils.PreDealUtils;
-import t.app.info.utils.ScreenUtils;
-import t.app.info.utils.SizeUtils;
-import t.app.info.utils.ToastUtils;
 import t.app.info.utils.config.NotifyConstants;
 import t.app.info.utils.config.ProConstants;
 
@@ -189,7 +189,7 @@ public class ScreenInfoFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             // 如果页面已经关闭,则不进行处理
-            if (PreDealUtils.isFinishingCtx(mContext)){
+            if (ActivityManager.isFinishingCtx(mContext)){
                 return;
             }
             // 判断通知类型
@@ -234,12 +234,12 @@ public class ScreenInfoFragment extends BaseFragment {
         // 设备信息
         HashMap<String, String> mapDeviceInfos = new HashMap<>();
         // 进行初始化获取
-        DeviceInfoUtils.getDeviceInfo(mapDeviceInfos);
+        DeviceUtils.getDeviceInfo2(mapDeviceInfos);
         mListDeviceInfos.clear();
         // 获取屏幕尺寸(英寸)
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.screen, DeviceInfoUtils.getScreenSizeOfDevice() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.screen, ScreenUtils.getScreenSizeOfDevice() + ""));
         // 获取屏幕分辨率
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.screen_size, DeviceInfoUtils.getScreenSize() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.screen_size, ScreenUtils.getScreenSize() + ""));
         // 获取屏幕高度
         mListDeviceInfos.add(new DeviceInfoItem(R.string.height_pixels, ScreenUtils.getScreenHeight() + ""));
         // 获取屏幕宽度

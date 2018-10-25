@@ -58,6 +58,8 @@
     <string name="file_not_exist">文件不存在</string>
     <string name="delete_suc">删除成功</string>
     <string name="reset_desetting_suc">恢复默认设置成功</string>
+    <string name="install_fail">安装失败</string>
+    <string name="install_request_tips">请选择应用并允许安装权限</string>
 
     <string name="model">手机型号</string>
     <string name="manufacturer">设备制造商</string>

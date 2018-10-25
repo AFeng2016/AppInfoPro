@@ -10,12 +10,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import dev.DevUtils;
+import dev.utils.app.share.IPreference;
+import dev.utils.app.share.SharedUtils;
 import t.app.info.base.BaseApplication;
 import t.app.info.beans.AppInfoBean;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
-import t.app.info.utils.share.IPreference;
-import t.app.info.utils.share.SharedUtils;
 
 /**
  * detail: 项目工具类

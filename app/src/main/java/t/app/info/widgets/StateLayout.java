@@ -13,8 +13,8 @@ import com.tt.whorlviewlibrary.WhorlView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.ViewUtils;
 import t.app.info.R;
-import t.app.info.utils.ViewUtils;
 
 /**
  * detail: 状态布局

@@ -58,6 +58,8 @@
     <string name="file_not_exist">file not exist</string>
     <string name="delete_suc">delete suc</string>
     <string name="reset_desetting_suc">reset df setting suc</string>
+    <string name="install_fail">install fail</string>
+    <string name="install_request_tips">Please select application and allow installation permission.</string>
 
     <string name="model">Phone model</string>
     <string name="manufacturer">Manufacturer</string>

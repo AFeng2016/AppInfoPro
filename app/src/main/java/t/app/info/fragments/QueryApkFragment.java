@@ -15,6 +15,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.common.DevCommonUtils;
 import t.app.info.R;
 import t.app.info.activitys.MainActivity;
 import t.app.info.adapters.FileResAdapter;
@@ -23,8 +25,6 @@ import t.app.info.base.BaseFragment;
 import t.app.info.base.observer.DevObserverNotify;
 import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.item.FileResItem;
-import t.app.info.utils.DevCommonUtils;
-import t.app.info.utils.PreDealUtils;
 import t.app.info.utils.QuerySDCardUtils;
 import t.app.info.utils.config.NotifyConstants;
 import t.app.info.widgets.StateLayout;
@@ -266,7 +266,7 @@ public class QueryApkFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             // 如果页面已经关闭,则不进行处理
-            if (PreDealUtils.isFinishingCtx(mContext)){
+            if (ActivityManager.isFinishingCtx(mContext)){
                 return;
             }
             // 判断通知类型

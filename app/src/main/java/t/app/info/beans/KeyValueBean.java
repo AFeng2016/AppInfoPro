@@ -2,7 +2,7 @@ package t.app.info.beans;
 
 import android.support.annotation.StringRes;
 
-import t.app.info.utils.DevUtils;
+import dev.DevUtils;
 
 /**
  * detail: 键对值 实体类

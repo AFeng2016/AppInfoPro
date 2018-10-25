@@ -2,12 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
+
     defaultConfig {
         applicationId "t.app.info"
-        minSdkVersion 19
+        minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
     }
     buildTypes {
         debug{
@@ -29,16 +30,15 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     /** 插件相关 */
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     // 注解
-    compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'com.jakewharton:butterknife-compiler:8.5.1'
+    implementation 'com.jakewharton:butterknife:8.5.1'
+    implementation 'com.jakewharton:butterknife-compiler:8.5.1'
     // Gson解析
-    compile 'com.google.code.gson:gson:2.8.0'
-    // 权限管理
-    compile 'com.anthonycr.grant:permissions:1.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
     // 加载动画效果
-    compile 'com.tt:whorlviewlibrary:1.0.3'
+    implementation 'com.tt:whorlviewlibrary:1.0.3'
+    // DevUtils
+    implementation 'com.github.afkT:DevUtils:1.0.7@aar'
 }

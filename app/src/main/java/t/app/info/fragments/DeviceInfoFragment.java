@@ -16,6 +16,14 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.CPUUtils;
+import dev.utils.app.DeviceUtils;
+import dev.utils.app.MemoryUtils;
+import dev.utils.app.SDCardUtils;
+import dev.utils.app.ScreenUtils;
+import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.toast.ToastUtils;
+import dev.utils.common.FileUtils;
 import t.app.info.R;
 import t.app.info.adapters.DeviceInfoAdapter;
 import t.app.info.base.BaseApplication;
@@ -23,10 +31,6 @@ import t.app.info.base.BaseFragment;
 import t.app.info.base.observer.DevObserverNotify;
 import t.app.info.beans.DeviceInfoBean;
 import t.app.info.beans.item.DeviceInfoItem;
-import t.app.info.utils.DeviceInfoUtils;
-import t.app.info.utils.FileUtils;
-import t.app.info.utils.PreDealUtils;
-import t.app.info.utils.ToastUtils;
 import t.app.info.utils.config.NotifyConstants;
 import t.app.info.utils.config.ProConstants;
 
@@ -189,7 +193,7 @@ public class DeviceInfoFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             // 如果页面已经关闭,则不进行处理
-            if (PreDealUtils.isFinishingCtx(mContext)){
+            if (ActivityManager.isFinishingCtx(mContext)){
                 return;
             }
             // 判断通知类型
@@ -242,7 +246,7 @@ public class DeviceInfoFragment extends BaseFragment {
         // 设备信息
         HashMap<String, String> mapDeviceInfos = new HashMap<>();
         // 进行初始化获取
-        DeviceInfoUtils.getDeviceInfo(mapDeviceInfos);
+        DeviceUtils.getDeviceInfo2(mapDeviceInfos);
         mListDeviceInfos.clear();
         // 获取手机型号
         mListDeviceInfos.add(new DeviceInfoItem(R.string.model, android.os.Build.MODEL + ""));
@@ -253,17 +257,17 @@ public class DeviceInfoFragment extends BaseFragment {
         // 获取Android 系统版本
         mListDeviceInfos.add(new DeviceInfoItem(R.string.version_release, android.os.Build.VERSION.RELEASE + ""));
         // 获取屏幕尺寸(英寸)
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.screen, DeviceInfoUtils.getScreenSizeOfDevice() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.screen, ScreenUtils.getScreenSizeOfDevice() + ""));
         // 获取屏幕分辨率
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.screen_size, DeviceInfoUtils.getScreenSize() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.screen_size, ScreenUtils.getScreenSize() + ""));
         // 获取手机总空间
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.sdcard_total, DeviceInfoUtils.getSDTotalSize() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.sdcard_total, SDCardUtils.getSDTotalSize() + ""));
         // 获取手机可用空间
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.sdcard_available, DeviceInfoUtils.getSDAvailableSize() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.sdcard_available, SDCardUtils.getSDAvailableSize() + ""));
         // 获取手机总内存
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.memory_total, DeviceInfoUtils.getTotalMemory() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.memory_total, MemoryUtils.getTotalMemory() + ""));
         // 获取手机可用内存
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.memory_available, DeviceInfoUtils.getMemoryAvailable() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.memory_available, MemoryUtils.getMemoryAvailable() + ""));
         // 获取设备版本号
         mListDeviceInfos.add(new DeviceInfoItem(R.string.id, Build.ID + ""));
         // 获取设备版本
@@ -291,9 +295,9 @@ public class DeviceInfoFragment extends BaseFragment {
         } catch (Exception e){
         }
         // 获取基带版本
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.baseband_version, DeviceInfoUtils.getBaseband_Ver() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.baseband_version, DeviceUtils.getBaseband_Ver() + ""));
         // 获取内核版本
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.linuxcode_version, DeviceInfoUtils.getLinuxCore_Ver() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.linuxcode_version, DeviceUtils.getLinuxCore_Ver() + ""));
         // 获取序列号
         mListDeviceInfos.add(new DeviceInfoItem(R.string.serial, Build.SERIAL + ""));
         // 设备唯一标识,由设备的多个信息拼接合成.
@@ -303,7 +307,7 @@ public class DeviceInfoFragment extends BaseFragment {
         // 获取设备硬件名称,一般和基板名称一样（BOARD）
         mListDeviceInfos.add(new DeviceInfoItem(R.string.hardware, Build.HARDWARE + ""));
         // 获取CPU 型号
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpuinfo, DeviceInfoUtils.getCpuInfo() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpuinfo, CPUUtils.getCpuInfo() + ""));
         // CPU指令集
         mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_abi1, android.os.Build.CPU_ABI + ""));
         mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_abi2, android.os.Build.CPU_ABI2 + ""));
@@ -317,13 +321,13 @@ public class DeviceInfoFragment extends BaseFragment {
         } catch (Exception e){
         }
         // 获取 CPU 数量
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_number, DeviceInfoUtils.getCPUNumCores() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_number, CPUUtils.getCoresNumbers() + ""));
         // 获取 CPU 最高 HZ
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_max, DeviceInfoUtils.getMaxCpuFreq() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_max, CPUUtils.getMaxCpuFreq() + ""));
         // 获取 CPU 最底 HZ
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_min, DeviceInfoUtils.getMinCpuFreq() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_min, CPUUtils.getMinCpuFreq() + ""));
         // 获取 CPU 当前 HZ
-        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_cur, DeviceInfoUtils.getCurCpuFreq() + ""));
+        mListDeviceInfos.add(new DeviceInfoItem(R.string.cpu_cur, CPUUtils.getCurCpuFreq() + ""));
 
         // 发送通知
         vHandler.sendEmptyMessage(NotifyConstants.H_QUERY_DEVICE_INFO_END_NOTIFY);

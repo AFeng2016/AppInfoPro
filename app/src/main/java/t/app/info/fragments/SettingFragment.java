@@ -11,19 +11,19 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.share.SharedUtils;
+import dev.utils.app.toast.ToastUtils;
 import t.app.info.R;
 import t.app.info.base.BaseApplication;
 import t.app.info.base.BaseFragment;
 import t.app.info.base.observer.DevObserverNotify;
 import t.app.info.dialogs.AppSortDialog;
 import t.app.info.dialogs.QuerySuffixDialog;
-import t.app.info.utils.PreDealUtils;
 import t.app.info.utils.ProUtils;
 import t.app.info.utils.QuerySuffixUtils;
-import t.app.info.utils.ToastUtils;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
-import t.app.info.utils.share.SharedUtils;
 
 /**
  * detail: 设置信息 - Fragment
@@ -210,7 +210,7 @@ public class SettingFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             // 如果页面已经关闭,则不进行处理
-            if (PreDealUtils.isFinishingCtx(mContext)){
+            if (ActivityManager.isFinishingCtx(mContext)){
                 return;
             }
             // 判断通知类型

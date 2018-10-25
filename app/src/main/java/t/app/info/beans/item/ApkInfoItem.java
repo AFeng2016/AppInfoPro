@@ -17,14 +17,13 @@ import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import dev.DevUtils;
+import dev.utils.app.AppCommonUtils;
+import dev.utils.app.SignaturesUtils;
+import dev.utils.common.FileUtils;
 import t.app.info.R;
 import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.KeyValueBean;
-import t.app.info.utils.AppCommonUtils;
-import t.app.info.utils.DevUtils;
-import t.app.info.utils.FileUtils;
-import t.app.info.utils.PreDealUtils;
-import t.app.info.utils.SignaturesUtils;
 
 /**
  * detail: Apk 信息Item
@@ -188,9 +187,9 @@ public final class ApkInfoItem {
             appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.sha256_hint_s, sha256));
         }
         // app 最低支持版本
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.minsdkversion_hint_s, minSdkVersion + " ( " + PreDealUtils.convertSDKVersion(minSdkVersion) + "+ )"));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.minsdkversion_hint_s, minSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(minSdkVersion) + "+ )"));
         // app 兼容sdk版本
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.targetsdkversion_hint_s, targetSdkVersion + " ( " + PreDealUtils.convertSDKVersion(targetSdkVersion) + "+ )"));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.targetsdkversion_hint_s, targetSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(targetSdkVersion) + "+ )"));
         // 获取 apk 大小
         appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.apk_length_hint_s, apkLength));
         // 没报错才存储 其他签名信息

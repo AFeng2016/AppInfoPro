@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import dev.utils.app.ClipboardUtils;
+import dev.utils.app.toast.ToastUtils;
 import t.app.info.R;
 import t.app.info.beans.DeviceInfoBean;
 import t.app.info.beans.item.DeviceInfoItem;
-import t.app.info.utils.ClipboardUtils;
-import t.app.info.utils.ToastUtils;
 
 /**
  * detail: 设备信息 Adapter

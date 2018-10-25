@@ -21,13 +21,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.anthonycr.grant.PermissionsManager;
-import com.anthonycr.grant.PermissionsResultAction;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.DevUtils;
+import dev.utils.app.AppUtils;
+import dev.utils.app.ClipboardUtils;
+import dev.utils.app.PermissionUtils;
+import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.toast.ToastUtils;
+import dev.utils.common.FileUtils;
 import t.app.info.R;
 import t.app.info.base.BaseApplication;
 import t.app.info.base.observer.DevObserverNotify;
@@ -35,12 +39,6 @@ import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.KeyValueBean;
 import t.app.info.beans.item.AppInfoItem;
 import t.app.info.beans.item.ViewHolderItem;
-import t.app.info.utils.AppUtils;
-import t.app.info.utils.ClipboardUtils;
-import t.app.info.utils.DevUtils;
-import t.app.info.utils.FileUtils;
-import t.app.info.utils.PreDealUtils;
-import t.app.info.utils.ToastUtils;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
 import t.app.info.utils.config.ProConstants;
@@ -205,7 +203,7 @@ public class AppDetailsActivity extends AppCompatActivity implements View.OnClic
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             // 如果页面已经关闭,则不进行处理
-            if (PreDealUtils.isFinishingCtx(mContext)){
+            if (ActivityManager.isFinishingCtx(mContext)){
                 return;
             }
             // 操作结果
@@ -374,19 +372,19 @@ public class AppDetailsActivity extends AppCompatActivity implements View.OnClic
                     // 发出通知
                     BaseApplication.sDevObservableNotify.onNotify(NotifyConstants.H_EXPORT_APP_MSG_NOTIFY);
                 } else {
-                    PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this, new String[]{ permission }, new PermissionsResultAction() {
+                    PermissionUtils.permission(permission).callBack(new PermissionUtils.PermissionCallBack() {
                         @Override
-                        public void onGranted() {
+                        public void onGranted(PermissionUtils permissionUtils) {
                             // 发出通知
                             BaseApplication.sDevObservableNotify.onNotify(NotifyConstants.H_EXPORT_APP_MSG_NOTIFY);
                         }
 
                         @Override
-                        public void onDenied(String permission) {
+                        public void onDenied(PermissionUtils permissionUtils) {
                             // 提示导出失败
                             ToastUtils.showShort(mContext, R.string.export_fail);
                         }
-                    });
+                    }).request();
                 }
                 break;
             case R.id.bmai_export_app: // 导出apk 安装包// 需要的权限
@@ -395,19 +393,19 @@ public class AppDetailsActivity extends AppCompatActivity implements View.OnClic
                     // 发出通知
                     BaseApplication.sDevObservableNotify.onNotify(NotifyConstants.H_EXPORT_APP_NOTIFY);
                 } else {
-                    PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this, new String[]{ permission }, new PermissionsResultAction() {
+                    PermissionUtils.permission(permission).callBack(new PermissionUtils.PermissionCallBack() {
                         @Override
-                        public void onGranted() {
+                        public void onGranted(PermissionUtils permissionUtils) {
                             // 发出通知
                             BaseApplication.sDevObservableNotify.onNotify(NotifyConstants.H_EXPORT_APP_NOTIFY);
                         }
 
                         @Override
-                        public void onDenied(String permission) {
+                        public void onDenied(PermissionUtils permissionUtils) {
                             // 提示导出失败
                             ToastUtils.showShort(mContext, R.string.export_fail);
                         }
-                    });
+                    }).request();
                 }
                 break;
             case R.id.bmai_share: // 分享

@@ -21,13 +21,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.anthonycr.grant.PermissionsManager;
-import com.anthonycr.grant.PermissionsResultAction;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.ClickUtils;
+import dev.utils.app.PermissionUtils;
+import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.toast.ToastUtils;
 import t.app.info.R;
 import t.app.info.base.BaseApplication;
 import t.app.info.base.BaseFragment;
@@ -37,11 +38,8 @@ import t.app.info.fragments.DeviceInfoFragment;
 import t.app.info.fragments.QueryApkFragment;
 import t.app.info.fragments.ScreenInfoFragment;
 import t.app.info.fragments.SettingFragment;
-import t.app.info.utils.ClickUtils;
-import t.app.info.utils.PreDealUtils;
 import t.app.info.utils.ProUtils;
 import t.app.info.utils.QuerySDCardUtils;
-import t.app.info.utils.ToastUtils;
 import t.app.info.utils.config.NotifyConstants;
 
 /**
@@ -381,19 +379,19 @@ public class MainActivity extends AppCompatActivity {
                     // 发出通知
                     BaseApplication.sDevObservableNotify.onNotify(NotifyConstants.H_EXPORT_DEVICE_MSG_NOTIFY);
                 } else {
-                    PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this, new String[]{ permission }, new PermissionsResultAction() {
+                    PermissionUtils.permission(permission).callBack(new PermissionUtils.PermissionCallBack() {
                         @Override
-                        public void onGranted() {
+                        public void onGranted(PermissionUtils permissionUtils) {
                             // 发出通知
                             BaseApplication.sDevObservableNotify.onNotify(NotifyConstants.H_EXPORT_DEVICE_MSG_NOTIFY);
                         }
 
                         @Override
-                        public void onDenied(String permission) {
+                        public void onDenied(PermissionUtils permissionUtils) {
                             // 提示导出失败
                             ToastUtils.showShort(mContext, R.string.export_fail);
                         }
-                    });
+                    }).request();
                 }
                 break;
         }
@@ -516,7 +514,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             // 如果页面已经关闭,则不进行处理
-            if (PreDealUtils.isFinishingCtx(mContext)){
+            if (ActivityManager.isFinishingCtx(mContext)){
                 return;
             }
             // 判断通知类型
@@ -540,15 +538,8 @@ public class MainActivity extends AppCompatActivity {
         // 判断是否存在读写权限
         if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) { // 已经存在权限
         } else {
-            PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this, new String[]{permission}, new PermissionsResultAction() {
-                @Override
-                public void onGranted() { // 同意权限
-                }
-
-                @Override
-                public void onDenied(String permission) { // 拒绝/禁止权限
-                }
-            });
+            // 请求权限
+            PermissionUtils.permission(permission).request();
         }
     }
 

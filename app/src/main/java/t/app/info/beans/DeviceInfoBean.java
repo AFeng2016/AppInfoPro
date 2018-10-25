@@ -4,8 +4,8 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import dev.DevUtils;
 import t.app.info.beans.item.DeviceInfoItem;
-import t.app.info.utils.DevUtils;
 
 /**
  * detail: 设备参数实体类

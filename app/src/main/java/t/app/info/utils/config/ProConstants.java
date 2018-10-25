@@ -2,7 +2,7 @@ package t.app.info.utils.config;
 
 import java.io.File;
 
-import t.app.info.utils.SDCardUtils;
+import dev.utils.app.SDCardUtils;
 
 /**
  * detail: 项目常量

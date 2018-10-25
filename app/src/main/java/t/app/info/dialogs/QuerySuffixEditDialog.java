@@ -15,10 +15,10 @@ import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.KeyBoardUtils;
+import dev.utils.app.ScreenUtils;
 import t.app.info.R;
-import t.app.info.utils.KeyBoardUtils;
 import t.app.info.utils.QuerySuffixUtils;
-import t.app.info.utils.ScreenUtils;
 
 /**
  * detail: 搜索后缀设置 Dialog

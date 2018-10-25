@@ -5,8 +5,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 
-import t.app.info.utils.DevUtils;
-import t.app.info.utils.FileUtils;
+import dev.DevUtils;
+import dev.utils.common.FileUtils;
 
 /**
  * detail: app 信息实体类

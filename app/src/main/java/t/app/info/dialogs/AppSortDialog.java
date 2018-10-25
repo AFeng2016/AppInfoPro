@@ -14,13 +14,13 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.ScreenUtils;
+import dev.utils.app.share.SharedUtils;
 import t.app.info.R;
 import t.app.info.base.BaseApplication;
 import t.app.info.utils.ProUtils;
-import t.app.info.utils.ScreenUtils;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
-import t.app.info.utils.share.SharedUtils;
 
 /**
  * detail: App 排序 Dialog

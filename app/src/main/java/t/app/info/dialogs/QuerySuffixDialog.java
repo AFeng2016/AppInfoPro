@@ -12,10 +12,10 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.ScreenUtils;
+import dev.utils.app.toast.ToastUtils;
 import t.app.info.R;
 import t.app.info.adapters.QuerySuffixAdapter;
-import t.app.info.utils.ScreenUtils;
-import t.app.info.utils.ToastUtils;
 
 /**
  * detail: 搜索后缀设置 Dialog

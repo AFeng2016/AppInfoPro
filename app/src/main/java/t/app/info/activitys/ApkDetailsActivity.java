@@ -2,10 +2,12 @@ package t.app.info.activitys;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,24 +20,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.anthonycr.grant.PermissionsManager;
-import com.anthonycr.grant.PermissionsResultAction;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.utils.app.AppCommonUtils;
+import dev.utils.app.AppUtils;
+import dev.utils.app.ClipboardUtils;
+import dev.utils.app.PermissionUtils;
+import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.toast.ToastUtils;
+import dev.utils.common.FileUtils;
 import t.app.info.R;
 import t.app.info.base.BaseApplication;
 import t.app.info.base.observer.DevObserverNotify;
 import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.KeyValueBean;
 import t.app.info.beans.item.ApkInfoItem;
-import t.app.info.utils.AppUtils;
-import t.app.info.utils.ClipboardUtils;
-import t.app.info.utils.FileUtils;
-import t.app.info.utils.PreDealUtils;
-import t.app.info.utils.ToastUtils;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
 import t.app.info.utils.config.ProConstants;
@@ -99,12 +100,39 @@ public class ApkDetailsActivity extends AppCompatActivity implements View.OnClic
             case R.id.apd_install_apk_tv: // 安装应用
                 // 文件存在处理
                 if (FileUtils.isFileExists(apkInfoItem.getApkUri())){
+                    // Android 8.0以上
+                    if (AppCommonUtils.isO()){
+                        if (getPackageManager().canRequestPackageInstalls()){
+                            // 安装apk
+                            AppUtils.installApp(apkInfoItem.getApkUri(), "t.app.info.fileprovider");
+                        } else {
+                            PermissionUtils.permission(Manifest.permission.REQUEST_INSTALL_PACKAGES).callBack(new PermissionUtils.PermissionCallBack() {
+                                @Override
+                                public void onGranted(PermissionUtils permissionUtils) {
+                                    // 安装apk
+                                    AppUtils.installApp(apkInfoItem.getApkUri(), "t.app.info.fileprovider");
+                                }
+
+                                @Override
+                                public void onDenied(PermissionUtils permissionUtils) {
+                                    try {
+                                        // 先进行提示
+                                        ToastUtils.showShort(ApkDetailsActivity.this, R.string.install_request_tips);
+                                        // 跳转设置页面, 开启安装未知应用权限
+                                        startActivity(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES));
+                                    } catch (Exception e) {
+                                        ToastUtils.showShort(ApkDetailsActivity.this, R.string.install_fail);
+                                    }
+                                }
+                            }).request();
+                        }
+                        return;
+                    }
                     // 安装apk
                     AppUtils.installApp(apkInfoItem.getApkUri(), "t.app.info.fileprovider");
                 } else {
                     ToastUtils.showShort(this, R.string.file_not_exist);
                 }
-
                 break;
             case R.id.apd_delete_apk_tv: // 删除apk文件
                 // 文件存在处理
@@ -187,7 +215,7 @@ public class ApkDetailsActivity extends AppCompatActivity implements View.OnClic
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             // 如果页面已经关闭,则不进行处理
-            if (PreDealUtils.isFinishingCtx(mContext)){
+            if (ActivityManager.isFinishingCtx(mContext)){
                 return;
             }
             // 操作结果
@@ -293,19 +321,19 @@ public class ApkDetailsActivity extends AppCompatActivity implements View.OnClic
                     // 发出通知
                     BaseApplication.sDevObservableNotify.onNotify(NotifyConstants.H_EXPORT_APP_MSG_NOTIFY);
                 } else {
-                    PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this, new String[]{permission}, new PermissionsResultAction() {
+                    PermissionUtils.permission(permission).callBack(new PermissionUtils.PermissionCallBack() {
                         @Override
-                        public void onGranted() {
+                        public void onGranted(PermissionUtils permissionUtils) {
                             // 发出通知
                             BaseApplication.sDevObservableNotify.onNotify(NotifyConstants.H_EXPORT_APP_MSG_NOTIFY);
                         }
 
                         @Override
-                        public void onDenied(String permission) {
+                        public void onDenied(PermissionUtils permissionUtils) {
                             // 提示导出失败
                             ToastUtils.showShort(mContext, R.string.export_fail);
                         }
-                    });
+                    }).request();
                 }
                 break;
         }
