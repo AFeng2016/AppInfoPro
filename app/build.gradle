@@ -40,5 +40,5 @@ dependencies {
     // 加载动画效果
     implementation 'com.tt:whorlviewlibrary:1.0.3'
     // DevUtils
-    implementation 'com.github.afkT:DevUtils:1.0.7@aar'
+    implementation 'com.github.afkT:DevUtils:1.0.8@aar'
 }
