@@ -6,19 +6,18 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 
-import com.google.gson.GsonBuilder;
-
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import dev.DevUtils;
+import dev.utils.R;
 import dev.utils.app.AppCommonUtils;
 import dev.utils.app.SignaturesUtils;
 import dev.utils.common.FileUtils;
-import t.app.info.R;
 import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.KeyValueBean;
 
@@ -31,60 +30,66 @@ public final class AppInfoItem {
     // App 信息实体类
     private AppInfoBean appInfoBean;
     // App 参数集
-    private ArrayList<KeyValueBean> listKeyValues = new ArrayList<>();
+    private List<KeyValueBean> listKeyValues = new ArrayList<>();
 
     private AppInfoItem(){
     }
 
-    public static AppInfoItem obtain(String packName) throws Exception{
+    /**
+     * 初始化并获取 AppInfoItem 对象
+     * @param packName
+     * @return {@link AppInfoItem}
+     * @throws Exception
+     */
+    public static AppInfoItem obtain(String packName) throws Exception {
         // 如果包名为null, 则直接不处理
         if (TextUtils.isEmpty(packName)){
             return null;
         }
-        // 获取上下文
-        Context mContext = DevUtils.getContext();
+        // 获取 Context
+        Context context = DevUtils.getContext();
         // 初始化包管理类
-        PackageManager pManager = mContext.getPackageManager();
+        PackageManager pManager = context.getPackageManager();
         // 获取对应的PackageInfo(原始的PackageInfo 获取 signatures 等于null,需要这样获取)
         PackageInfo pInfo = pManager.getPackageInfo(packName, PackageManager.GET_SIGNATURES); // 64
         // 初始化实体类
         AppInfoItem appInfoItem = new AppInfoItem();
-        // 获取app 信息
+        // 获取 App 信息
         appInfoItem.appInfoBean = new AppInfoBean(pInfo, pManager);
         // == 获取 ==
         // 格式化日期
         SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // ===========
-        // app 签名MD5
+        // App 签名MD5
         String md5 = SignaturesUtils.signatureMD5(pInfo.signatures);
-        // app SHA1
+        // App SHA1
         String sha1 = SignaturesUtils.signatureSHA1(pInfo.signatures);
-        // app SHA256
+        // App SHA256
         String sha256 = SignaturesUtils.signatureSHA256(pInfo.signatures);
-        // app 首次安装时间
+        // App 首次安装时间
         String firstInstallTime = dFormat.format(pInfo.firstInstallTime);
         // 获取最后一次更新时间
         String lastUpdateTime = dFormat.format(pInfo.lastUpdateTime);
-        // app 最低支持版本
+        // App 最低支持版本
         int minSdkVersion = -1;
         // 属于7.0以上才有的方法
         if (AppCommonUtils.isN()){
             minSdkVersion = pInfo.applicationInfo.minSdkVersion;
         }
-        // app 兼容sdk版本
+        // App 兼容sdk版本
         int targetSdkVersion = pInfo.applicationInfo.targetSdkVersion;
-        // 获取 app 安装包大小
+        // 获取 App 安装包大小
         String apkLength = Formatter.formatFileSize(DevUtils.getContext(), FileUtils.getFileLength(appInfoItem.appInfoBean.getSourceDir()));
         // 获取证书对象
         X509Certificate cert = SignaturesUtils.getX509Certificate(pInfo.signatures);
         // 设置有效期
         StringBuilder sbEffective = new StringBuilder();
         sbEffective.append(dFormat.format(cert.getNotBefore()));
-        sbEffective.append(" " + mContext.getString(R.string.to) + " "); // 至
+        sbEffective.append(" " + context.getString(R.string.dev_str_to) + " "); // 至
         sbEffective.append(dFormat.format(cert.getNotAfter()));
         sbEffective.append("\n\n");
         sbEffective.append(cert.getNotBefore());
-        sbEffective.append(" " + mContext.getString(R.string.to) + " ");
+        sbEffective.append(" " + context.getString(R.string.dev_str_to) + " ");
         sbEffective.append(cert.getNotAfter());
         // 获取有效期
         String effective = sbEffective.toString();
@@ -100,7 +105,7 @@ public final class AppInfoItem {
             isEffective = true;
         }
         // 判断是否过期
-        String isEffectiveState = isEffective ? mContext.getString(R.string.overdue_hint_s) : mContext.getString(R.string.notoverdue_hint_s);
+        String isEffectiveState = isEffective ? context.getString(R.string.dev_str_overdue) : context.getString(R.string.dev_str_notoverdue);
         // 证书发布方
         String principal = cert.getIssuerX500Principal().toString();
         // 证书版本号
@@ -117,64 +122,62 @@ public final class AppInfoItem {
         // ================
         // === 保存集合 ===
         // ================
-        // app 包名
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.packname_hint_s, appInfoItem.appInfoBean.getAppPackName()));
-        // app 签名MD5
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.md5_hint_s, md5));
-        // app 版本号 - 主要用于app内部版本判断 int 类型
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.version_code_hint_s, appInfoItem.appInfoBean.getVersionCode() + ""));
-        // app 版本名 - 主要用于对用户显示版本信息
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.version_name_hint_s, appInfoItem.appInfoBean.getVersionName()));
-        // app SHA1
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.sha1_hint_s, sha1));
-        // app SHA256.
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.sha256_hint_s, sha256));
-        // app 首次安装时间
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.first_install_time_hint_s, firstInstallTime));
+        // App 包名
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_packname, appInfoItem.appInfoBean.getAppPackName()));
+        // App 签名MD5
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_md5, md5));
+        // App 版本号 - 主要用于app内部版本判断 int 类型
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_version_code, appInfoItem.appInfoBean.getVersionCode() + ""));
+        // App 版本名 - 主要用于对用户显示版本信息
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_version_name, appInfoItem.appInfoBean.getVersionName()));
+        // App SHA1
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_sha1, sha1));
+        // App SHA256.
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_sha256, sha256));
+        // App 首次安装时间
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_first_install_time, firstInstallTime));
         // 获取最后一次更新时间
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.last_update_time_hint_s, lastUpdateTime));
-        // app 最低支持版本
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.minsdkversion_hint_s, minSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(minSdkVersion) + "+ )"));
-        // app 兼容sdk版本
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.targetsdkversion_hint_s, targetSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(targetSdkVersion) + "+ )"));
-        // 获取 apk 大小
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.apk_length_hint_s, apkLength));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_last_update_time, lastUpdateTime));
+        // App 最低支持版本
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_minsdkversion, minSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(minSdkVersion) + "+ )"));
+        // App 兼容sdk版本
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_targetsdkversion, targetSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(targetSdkVersion) + "+ )"));
+        // 获取 Apk 大小
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_apk_length, apkLength));
         // 获取有效期
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.effective_hint_s, effective));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_effective, effective));
         // 判断是否过期
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.iseffective_hint_s, isEffectiveState));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_iseffective, isEffectiveState));
         // 证书发布方
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.principal_hint_s, principal));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_principal, principal));
         // 证书版本号
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.version_hint_s, version));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_version, version));
         // 证书算法名称
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.sigalgname_hint_s, sigalgname));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_sigalgname, sigalgname));
         // 证书算法OID
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.sigalgoid_hint_s, sigalgoid));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_sigalgoid, sigalgoid));
         // 证书机器码
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dercode_hint_s, serialnumber));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_dercode, serialnumber));
         // 证书 DER编码
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.serialnumber_hint_s, dercode));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_serialnumber, dercode));
 
         // 返回实体类
         return appInfoItem;
     }
 
+    /**
+     * 获取 AppInfoBean
+     * @return {@link AppInfoBean }
+     */
     public AppInfoBean getAppInfoBean() {
         return appInfoBean;
     }
 
-    public ArrayList<KeyValueBean> getListKeyValues() {
+    /**
+     * 获取 List<KeyValueBean>
+     * @return App 信息键对值集合
+     */
+    public List<KeyValueBean> getListKeyValues() {
         return listKeyValues;
-    }
-
-    @Override
-    public String toString() {
-        try {
-            // 返回 JSON格式数据 - 格式化
-            return new GsonBuilder().setPrettyPrinting().create().toJson(this);
-        } catch (Exception e){
-        }
-        return null;
     }
 }

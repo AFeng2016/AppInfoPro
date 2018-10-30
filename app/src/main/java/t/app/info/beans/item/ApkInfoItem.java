@@ -8,20 +8,20 @@ import android.content.pm.Signature;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 
-import com.google.gson.GsonBuilder;
-
 import java.io.File;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import dev.DevUtils;
+import dev.utils.LogPrintUtils;
+import dev.utils.R;
 import dev.utils.app.AppCommonUtils;
 import dev.utils.app.SignaturesUtils;
 import dev.utils.common.FileUtils;
-import t.app.info.R;
 import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.KeyValueBean;
 
@@ -31,17 +31,25 @@ import t.app.info.beans.KeyValueBean;
  */
 public final class ApkInfoItem {
 
-    // apk文件地址
+    // 日志Tag
+    private static final String TAG = ApkInfoItem.class.getSimpleName();
+    // Apk 文件地址
     private String apkUri;
     // App 信息实体类
     private AppInfoBean appInfoBean;
     // App 参数集
-    private ArrayList<KeyValueBean> listKeyValues = new ArrayList<>();
+    private List<KeyValueBean> listKeyValues = new ArrayList<>();
 
     private ApkInfoItem(){
     }
 
-    public static ApkInfoItem obtain(String apkUri) throws Exception{
+    /**
+     * 初始化并获取 ApkInfoItem 对象
+     * @param apkUri
+     * @return {@link ApkInfoItem}
+     * @throws Exception
+     */
+    public static ApkInfoItem obtain(String apkUri) throws Exception {
         // 如果地址为null, 则直接不处理
         if (TextUtils.isEmpty(apkUri)){
             return null;
@@ -55,22 +63,22 @@ public final class ApkInfoItem {
 
         // https://blog.csdn.net/sljjyy/article/details/17370665
 
-        // 获取上下文
-        Context mContext = DevUtils.getContext();
+        // 获取 Context
+        Context context = DevUtils.getContext();
         // 初始化包管理类
-        PackageManager pManager = mContext.getPackageManager();
+        PackageManager pManager = context.getPackageManager();
         // 获取对应的PackageInfo(原始的PackageInfo 获取 signatures 等于null,需要这样获取)
         PackageInfo pInfo = pManager.getPackageArchiveInfo(apkUri, PackageManager.GET_ACTIVITIES);
-        // = 设置 apk 位置信息 =
+        // = 设置 Apk 位置信息 =
         ApplicationInfo appInfo = pInfo.applicationInfo;
         /* 必须加这两句，不然下面icon获取是default icon而不是应用包的icon */
         appInfo.sourceDir = apkUri;
         appInfo.publicSourceDir = apkUri;
         // 初始化实体类
         ApkInfoItem appInfoItem = new ApkInfoItem();
-        // 保存apk文件地址
+        // 保存 Apk 文件地址
         appInfoItem.apkUri = apkUri;
-        // 获取app 信息
+        // 获取 App 信息
         appInfoItem.appInfoBean = new AppInfoBean(pInfo, pManager);
         // == 获取 ==
         // 格式化日期
@@ -78,21 +86,21 @@ public final class ApkInfoItem {
         // 获取签名信息
         Signature[] signatures = SignaturesUtils.getSignaturesFromApk(apkFile);
         // ===========
-        // app 签名MD5
+        // App 签名MD5
         String md5 = SignaturesUtils.signatureMD5(signatures);
-        // app SHA1
+        // App SHA1
         String sha1 = SignaturesUtils.signatureSHA1(signatures);
-        // app SHA256
+        // App SHA256
         String sha256 = SignaturesUtils.signatureSHA256(signatures);
-        // app 最低支持版本
+        // App 最低支持版本
         int minSdkVersion = -1;
         // 属于7.0以上才有的方法
         if (AppCommonUtils.isN()){
             minSdkVersion = pInfo.applicationInfo.minSdkVersion;
         }
-        // app 兼容sdk版本
+        // App 兼容sdk版本
         int targetSdkVersion = pInfo.applicationInfo.targetSdkVersion;
-        // 获取 app 安装包大小
+        // 获取 App 安装包大小
         String apkLength = Formatter.formatFileSize(DevUtils.getContext(), FileUtils.getFileLength(apkFile));
 
         // = 临时数据存储 =
@@ -101,7 +109,7 @@ public final class ApkInfoItem {
         // 临时签名信息
         ArrayList<KeyValueBean> listTemps = new ArrayList<>();
 
-        // Android的APK应用签名机制以及读取签名的方法
+        // Android 的 Apk 应用签名机制以及读取签名的方法
         // http://www.jb51.net/article/79894.htm
         try {
             // 获取证书对象
@@ -109,11 +117,11 @@ public final class ApkInfoItem {
             // 设置有效期
             StringBuilder sbEffective = new StringBuilder();
             sbEffective.append(dFormat.format(cert.getNotBefore()));
-            sbEffective.append(" " + mContext.getString(R.string.to) + " "); // 至
+            sbEffective.append(" " + context.getString(R.string.dev_str_to) + " "); // 至
             sbEffective.append(dFormat.format(cert.getNotAfter()));
             sbEffective.append("\n\n");
             sbEffective.append(cert.getNotBefore());
-            sbEffective.append(" " + mContext.getString(R.string.to) + " ");
+            sbEffective.append(" " + context.getString(R.string.dev_str_to) + " ");
             sbEffective.append(cert.getNotAfter());
             // 获取有效期
             String effective = sbEffective.toString();
@@ -129,7 +137,7 @@ public final class ApkInfoItem {
                 isEffective = true;
             }
             // 判断是否过期
-            String isEffectiveState = isEffective ? mContext.getString(R.string.overdue_hint_s) : mContext.getString(R.string.notoverdue_hint_s);
+            String isEffectiveState = isEffective ? context.getString(R.string.dev_str_overdue) : context.getString(R.string.dev_str_notoverdue);
             // 证书发布方
             String principal = cert.getIssuerX500Principal().toString();
             // 证书版本号
@@ -143,55 +151,55 @@ public final class ApkInfoItem {
             // 证书 DER编码
             String dercode = SignaturesUtils.toHexString(cert.getTBSCertificate());
             // 获取有效期
-            listTemps.add(KeyValueBean.get(R.string.effective_hint_s, effective));
+            listTemps.add(KeyValueBean.get(R.string.dev_str_effective, effective));
             // 判断是否过期
-            listTemps.add(KeyValueBean.get(R.string.iseffective_hint_s, isEffectiveState));
+            listTemps.add(KeyValueBean.get(R.string.dev_str_iseffective, isEffectiveState));
             // 证书发布方
-            listTemps.add(KeyValueBean.get(R.string.principal_hint_s, principal));
+            listTemps.add(KeyValueBean.get(R.string.dev_str_principal, principal));
             // 证书版本号
-            listTemps.add(KeyValueBean.get(R.string.version_hint_s, version));
+            listTemps.add(KeyValueBean.get(R.string.dev_str_version, version));
             // 证书算法名称
-            listTemps.add(KeyValueBean.get(R.string.sigalgname_hint_s, sigalgname));
+            listTemps.add(KeyValueBean.get(R.string.dev_str_sigalgname, sigalgname));
             // 证书算法OID
-            listTemps.add(KeyValueBean.get(R.string.sigalgoid_hint_s, sigalgoid));
+            listTemps.add(KeyValueBean.get(R.string.dev_str_sigalgoid, sigalgoid));
             // 证书机器码
-            listTemps.add(KeyValueBean.get(R.string.dercode_hint_s, serialnumber));
+            listTemps.add(KeyValueBean.get(R.string.dev_str_dercode, serialnumber));
             // 证书 DER编码
-            listTemps.add(KeyValueBean.get(R.string.serialnumber_hint_s, dercode));
+            listTemps.add(KeyValueBean.get(R.string.dev_str_serialnumber, dercode));
         } catch (Exception e){
-            e.printStackTrace();
+            LogPrintUtils.eTag(TAG, e, "obtain");
             isError = true;
         }
 
         // ================
         // === 保存集合 ===
         // ================
-        // app 包名
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.packname_hint_s, appInfoItem.appInfoBean.getAppPackName()));
+        // App 包名
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_packname, appInfoItem.appInfoBean.getAppPackName()));
         // 没报错才存储 MD5 信息
         if (!isError) {
-            // app 签名MD5
-            appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.md5_hint_s, md5));
+            // App 签名 MD5
+            appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_md5, md5));
         }
-        // app 版本号 - 主要用于app内部版本判断 int 类型
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.version_code_hint_s, appInfoItem.appInfoBean.getVersionCode() + ""));
-        // app 版本名 - 主要用于对用户显示版本信息
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.version_name_hint_s, appInfoItem.appInfoBean.getVersionName()));
+        // App 版本号 - 主要用于 App 内部版本判断 int 类型
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_version_code, appInfoItem.appInfoBean.getVersionCode() + ""));
+        // App 版本名 - 主要用于对用户显示版本信息
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_version_name, appInfoItem.appInfoBean.getVersionName()));
         // 安装包地址
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.apk_uri_hint_s, apkUri));
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_apk_uri, apkUri));
         // 没报错才存储 SHA 信息
         if (!isError) {
-            // app SHA1
-            appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.sha1_hint_s, sha1));
-            // app SHA256.
-            appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.sha256_hint_s, sha256));
+            // App SHA1
+            appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_sha1, sha1));
+            // App SHA256.
+            appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_sha256, sha256));
         }
-        // app 最低支持版本
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.minsdkversion_hint_s, minSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(minSdkVersion) + "+ )"));
-        // app 兼容sdk版本
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.targetsdkversion_hint_s, targetSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(targetSdkVersion) + "+ )"));
-        // 获取 apk 大小
-        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.apk_length_hint_s, apkLength));
+        // App 最低支持版本
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_minsdkversion, minSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(minSdkVersion) + "+ )"));
+        // App 兼容sdk版本
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_targetsdkversion, targetSdkVersion + " ( " + AppCommonUtils.convertSDKVersion(targetSdkVersion) + "+ )"));
+        // 获取 Apk 大小
+        appInfoItem.listKeyValues.add(KeyValueBean.get(R.string.dev_str_apk_length, apkLength));
         // 没报错才存储 其他签名信息
         if (!isError) {
             appInfoItem.listKeyValues.addAll(listTemps);
@@ -200,25 +208,27 @@ public final class ApkInfoItem {
         return appInfoItem;
     }
 
+    /**
+     * 获取 Apk uri
+     * @return apkUri
+     */
     public String getApkUri() {
         return apkUri;
     }
 
+    /**
+     * 获取 AppInfoBean
+     * @return {@link AppInfoBean}
+     */
     public AppInfoBean getAppInfoBean() {
         return appInfoBean;
     }
 
-    public ArrayList<KeyValueBean> getListKeyValues() {
+    /**
+     * 获取 List<KeyValueBean>
+     * @return App 信息键对值集合
+     */
+    public List<KeyValueBean> getListKeyValues() {
         return listKeyValues;
-    }
-
-    @Override
-    public String toString() {
-        try {
-            // 返回 JSON格式数据 - 格式化
-            return new GsonBuilder().setPrettyPrinting().create().toJson(this);
-        } catch (Exception e){
-        }
-        return null;
     }
 }

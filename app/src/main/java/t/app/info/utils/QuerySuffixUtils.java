@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import java.util.LinkedHashMap;
 
+import dev.utils.app.logger.DevLogger;
 import dev.utils.app.share.SharedUtils;
 import t.app.info.utils.config.KeyConstants;
 
@@ -12,6 +13,12 @@ import t.app.info.utils.config.KeyConstants;
  * Created by Ttt
  */
 public final class QuerySuffixUtils {
+
+    private QuerySuffixUtils(){
+    }
+
+    // 日志 TAG
+    private static final String TAG = QuerySuffixUtils.class.getSimpleName();
 
     /** 重置处理 */
     public static void reset(){
@@ -54,7 +61,7 @@ public final class QuerySuffixUtils {
             // 保存新的配置信息
             maps.putAll(new Gson().fromJson(getQuerySuffixStr(), maps.getClass()));
         } catch (Exception e){
-            e.printStackTrace();
+            DevLogger.eTag(TAG, e, "getQuerySuffixMap");
         }
         return maps;
     }
@@ -79,7 +86,7 @@ public final class QuerySuffixUtils {
             // 进行过滤返回
             return getQuerySuffixMap().keySet().toArray(new String[]{});
         } catch (Exception e){
-            e.printStackTrace();
+            DevLogger.eTag(TAG, e, "getFilterSuffixs");
         }
         return null;
     }

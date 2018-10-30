@@ -6,12 +6,16 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import dev.utils.app.logger.DevLogger;
+
 /**
  * detail: 观察者抽象类
  * Created by Ttt
  */
 public abstract class DevObservable<T> {
 
+	// 日志 TAG
+	private final String TAG = DevObservable.class.getSimpleName();
 	/** 观察者集合 */
 	protected final HashMap<Object, T> mapObservables = new HashMap<>(50);
 	/** 观察者 Key 集合 - 有序 */
@@ -104,7 +108,7 @@ public abstract class DevObservable<T> {
 				// 获取最先绑定的观察者
 				return mapObservables.get(key);
 			} catch (Exception e) {
-				e.printStackTrace();
+				DevLogger.eTag(TAG, e, "getStackHead");
 			}
 		}
 		return null;
@@ -122,7 +126,7 @@ public abstract class DevObservable<T> {
 				// 获取最后绑定的观察者
 				return mapObservables.get(key);
 			} catch (Exception e) {
-				e.printStackTrace();
+				DevLogger.eTag(TAG, e, "getStackTail");
 			}
 		}
 		return null;

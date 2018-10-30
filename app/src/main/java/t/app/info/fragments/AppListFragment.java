@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.logger.DevLogger;
 import dev.utils.common.DevCommonUtils;
 import t.app.info.R;
 import t.app.info.activitys.MainActivity;
@@ -34,6 +35,8 @@ import t.app.info.widgets.StateLayout;
  */
 public class AppListFragment extends BaseFragment {
 
+    // 日志 TAG
+    private final String TAG = AppListFragment.class.getSimpleName();
     // ===== View =====
     @BindView(R.id.fal_recycleview)
     RecyclerView fal_recycleview;
@@ -260,7 +263,7 @@ public class AppListFragment extends BaseFragment {
                                 // 进行筛选处理
                                 filterAppList(ProUtils.getAppLists(mAppType), listSearchs, (String) args[0]);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                DevLogger.eTag(TAG, e, "NotifyConstants.H_SEARCH_INPUT_CONTENT");
                             }
                             Message msg = new Message();
                             msg.what = NotifyConstants.H_QUERY_APPLIST_END_NOTIFY;

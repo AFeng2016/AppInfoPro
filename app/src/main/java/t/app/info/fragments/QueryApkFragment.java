@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.logger.DevLogger;
 import dev.utils.common.DevCommonUtils;
 import t.app.info.R;
 import t.app.info.activitys.MainActivity;
@@ -35,6 +36,8 @@ import t.app.info.widgets.StateLayout;
  */
 public class QueryApkFragment extends BaseFragment {
 
+    // 日志 TAG
+    private final String TAG = QueryApkFragment.class.getSimpleName();
     // ===== View =====
     @BindView(R.id.fqa_recycleview)
     RecyclerView fqa_recycleview;
@@ -191,7 +194,7 @@ public class QueryApkFragment extends BaseFragment {
                             // 发送通知
                             vHandler.sendEmptyMessage(NotifyConstants.H_QUERY_FILE_RES_END_NOTIFY);
                         } catch (Exception e){
-                            e.printStackTrace();
+                            DevLogger.eTag(TAG, e, "NotifyConstants.H_DELETE_APK_FILE_NOTIFY");
                         }
                         break;
                     case NotifyConstants.H_QUERY_FILE_RES_END_NOTIFY: // 搜索结束
@@ -239,7 +242,7 @@ public class QueryApkFragment extends BaseFragment {
                                 // 进行筛选处理
                                 filterApkList(QuerySDCardUtils.getInstance().getListFileResItems(), listSearchs, (String) args[0]);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                DevLogger.eTag(TAG, e, "NotifyConstants.H_SEARCH_INPUT_CONTENT");
                             }
                             msg = new Message();
                             msg.what = NotifyConstants.H_QUERY_FILE_RES_END_NOTIFY;

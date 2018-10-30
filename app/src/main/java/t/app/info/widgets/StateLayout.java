@@ -23,8 +23,6 @@ import t.app.info.R;
  */
 public class StateLayout extends FrameLayout {
 
-    // 日志TAG
-    private static final String TAG = "StateLayout";
     // === 其他属性 ==
     // 当前状态
     private State state;

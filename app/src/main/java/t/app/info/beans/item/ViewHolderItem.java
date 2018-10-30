@@ -21,9 +21,9 @@ public class ViewHolderItem {
     public ViewHolderItem(LayoutInflater inflater) {
         itemView = inflater.inflate(R.layout.item_app_details, null, false);
         // 初始化View
-        linear = (LinearLayout) itemView.findViewById(R.id.iad_linear);
-        key_tv = (TextView) itemView.findViewById(R.id.iad_key_tv);
-        value_tv = (TextView) itemView.findViewById(R.id.iad_value_tv);
+        linear = itemView.findViewById(R.id.iad_linear);
+        key_tv = itemView.findViewById(R.id.iad_key_tv);
+        value_tv = itemView.findViewById(R.id.iad_value_tv);
     }
 
     public View getItemView() {

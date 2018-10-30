@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +29,7 @@ import dev.utils.app.AppUtils;
 import dev.utils.app.ClipboardUtils;
 import dev.utils.app.PermissionUtils;
 import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.logger.DevLogger;
 import dev.utils.app.toast.ToastUtils;
 import dev.utils.common.FileUtils;
 import t.app.info.R;
@@ -37,6 +38,7 @@ import t.app.info.base.observer.DevObserverNotify;
 import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.KeyValueBean;
 import t.app.info.beans.item.ApkInfoItem;
+import t.app.info.utils.ProUtils;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
 import t.app.info.utils.config.ProConstants;
@@ -47,6 +49,8 @@ import t.app.info.utils.config.ProConstants;
  */
 public class ApkDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // 日志 TAG
+    private final String TAG = ApkDetailsActivity.class.getSimpleName();
     // 上下文
     private Context mContext;
     // apk 信息 Item
@@ -156,7 +160,7 @@ public class ApkDetailsActivity extends AppCompatActivity implements View.OnClic
             // 解析获取数据
             apkInfoItem = ApkInfoItem.obtain(getIntent().getStringExtra(KeyConstants.KEY_APK_URI));
         } catch (Exception e){
-            e.printStackTrace();
+            DevLogger.eTag(TAG, e, "initOperate");
         }
         if (apkInfoItem == null){
             // 提示获取失败
@@ -230,7 +234,7 @@ public class ApkDetailsActivity extends AppCompatActivity implements View.OnClic
                     // 获取文件名 应用名_包名_版本名.txt
                     fileName = "apkFile_" + apkInfoItem.getAppInfoBean().getAppName() + "_" + apkInfoItem.getAppInfoBean().getAppPackName() + "_" + apkInfoItem.getAppInfoBean().getVersionName() + ".txt";
                     // 导出数据
-                    result = FileUtils.saveFile(ProConstants.EXPORT_APK_MSG_PATH, fileName, apkInfoItem.toString());
+                    result = FileUtils.saveFile(ProConstants.EXPORT_APK_MSG_PATH, fileName, ProUtils.toJsonString(apkInfoItem));
                     // 获取提示内容
                     tips = mContext.getString(result ? R.string.export_suc : R.string.export_fail);
                     // 判断结果
@@ -268,7 +272,7 @@ public class ApkDetailsActivity extends AppCompatActivity implements View.OnClic
         // 清空旧的View
         apd_params_linear.removeAllViews();
         // 数据源
-        ArrayList<KeyValueBean> lists = apkInfoItem.getListKeyValues();
+        List<KeyValueBean> lists = apkInfoItem.getListKeyValues();
         // LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(this);
         // 遍历添加

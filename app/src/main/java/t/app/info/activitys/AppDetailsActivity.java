@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +30,7 @@ import dev.utils.app.AppUtils;
 import dev.utils.app.ClipboardUtils;
 import dev.utils.app.PermissionUtils;
 import dev.utils.app.assist.manager.ActivityManager;
+import dev.utils.app.logger.DevLogger;
 import dev.utils.app.toast.ToastUtils;
 import dev.utils.common.FileUtils;
 import t.app.info.R;
@@ -39,6 +40,7 @@ import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.KeyValueBean;
 import t.app.info.beans.item.AppInfoItem;
 import t.app.info.beans.item.ViewHolderItem;
+import t.app.info.utils.ProUtils;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
 import t.app.info.utils.config.ProConstants;
@@ -49,6 +51,8 @@ import t.app.info.utils.config.ProConstants;
  */
 public class AppDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // 日志 TAG
+    private final String TAG = AppDetailsActivity.class.getSimpleName();
     // 上下文
     private Context mContext;
     // app 信息 Item
@@ -140,7 +144,7 @@ public class AppDetailsActivity extends AppCompatActivity implements View.OnClic
             // 解析获取数据
             appInfoItem = AppInfoItem.obtain(getIntent().getStringExtra(KeyConstants.KEY_PACKNAME));
         } catch (Exception e){
-            e.printStackTrace();
+            DevLogger.eTag(TAG, e, "initOperate");
         }
         if (appInfoItem == null){
             // 提示获取失败
@@ -218,7 +222,7 @@ public class AppDetailsActivity extends AppCompatActivity implements View.OnClic
                     // 获取文件名 应用名_包名_版本名.txt
                     fileName = appInfoItem.getAppInfoBean().getAppName() + "_" + appInfoItem.getAppInfoBean().getAppPackName() + "_" + appInfoItem.getAppInfoBean().getVersionName() + ".txt";
                     // 导出数据
-                    result = FileUtils.saveFile(ProConstants.EXPORT_APP_MSG_PATH, fileName, appInfoItem.toString());
+                    result = FileUtils.saveFile(ProConstants.EXPORT_APP_MSG_PATH, fileName, ProUtils.toJsonString(appInfoItem));
                     // 获取提示内容
                     tips = mContext.getString(result ? R.string.export_suc : R.string.export_fail);
                     // 判断结果
@@ -289,7 +293,7 @@ public class AppDetailsActivity extends AppCompatActivity implements View.OnClic
         // 其他功能
         otherFunction();
         // 数据源
-        ArrayList<KeyValueBean> lists = appInfoItem.getListKeyValues();
+        List<KeyValueBean> lists = appInfoItem.getListKeyValues();
         // LayoutInflater
         LayoutInflater inflater = LayoutInflater.from(this);
         // 遍历添加

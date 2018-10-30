@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import dev.utils.app.SDCardUtils;
+import dev.utils.app.logger.DevLogger;
 import dev.utils.common.DevCommonUtils;
 import dev.utils.common.FileUtils;
 import t.app.info.base.BaseApplication;
@@ -22,6 +23,8 @@ public final class QuerySDCardUtils {
     private QuerySDCardUtils(){
     }
 
+    // 日志 TAG
+    private final String TAG = QuerySDCardUtils.class.getSimpleName();
     // 初始化实体类
     private static QuerySDCardUtils instance = new QuerySDCardUtils();
 
@@ -201,7 +204,7 @@ public final class QuerySDCardUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            DevLogger.eTag(TAG, e, "queryFile");
         }
     }
 
@@ -222,7 +225,7 @@ public final class QuerySDCardUtils {
                 // 判断是否符合结尾
                 if (DevCommonUtils.isEndsWith(true, fName, filterSuffixs)){
                     // 获取App信息
-                    AppInfoBean appInfoBean = AppInfoBean.obtain(fPath);
+                    AppInfoBean appInfoBean = AppInfoBean.obtainUri(fPath);
                     if (appInfoBean != null){
                         // 初始化实体类
                         return new FileResItem(appInfoBean, file, fName, fPath, FileUtils.getFileMD5ToString(file));
@@ -230,7 +233,7 @@ public final class QuerySDCardUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            DevLogger.eTag(TAG, e, "getFileToFileResItem");
         }
         return null;
     }

@@ -43,7 +43,6 @@
     <string name="search_noresult_tips">没有找到与 %s 相关的结果</string>
 
     <string name="empty"></string>
-    <string name="to">至</string>
     <string name="copy_suc">复制成功</string>
     <string name="export_suc">导出成功</string>
     <string name="export_fail">导出失败</string>
@@ -103,26 +102,29 @@
     <string name="width_dpi">宽度基准 DPI</string>
     <string name="convert_dpi">转换 DPI</string>
 
-    <string name="packname_hint_s">应用包名</string>
-    <string name="md5_hint_s">应用 MD5签名</string>
-    <string name="version_code_hint_s">应用版本号(内部判断)</string>
-    <string name="version_name_hint_s">应用版本名(用户展示)</string>
-    <string name="apk_uri_hint_s">安装包地址</string>
-    <string name="sha1_hint_s">SHA1</string>
-    <string name="sha256_hint_s">SHA256</string>
-    <string name="first_install_time_hint_s">首次安装时间</string>
-    <string name="last_update_time_hint_s">最近更新时间</string>
-    <string name="minsdkversion_hint_s">app 最低支持版本</string>
-    <string name="targetsdkversion_hint_s">app 兼容sdk版本</string>
-    <string name="apk_length_hint_s">Apk 安装包大小</string>
-    <string name="effective_hint_s">有效时间</string>
-    <string name="iseffective_hint_s">签名是否过期</string>
-    <string name="overdue_hint_s">已过期</string>
-    <string name="notoverdue_hint_s">未过期</string>
-    <string name="principal_hint_s">证书发布方</string>
-    <string name="version_hint_s">证书版本号</string>
-    <string name="sigalgname_hint_s">证书算法名称</string>
-    <string name="sigalgoid_hint_s">证书算法OID</string>
-    <string name="dercode_hint_s">证书DER编码</string>
-    <string name="serialnumber_hint_s">证书机器码</string>
+    <string name="dev_str_to">至</string>
+
+    <string name="dev_str_packname">应用包名</string>
+    <string name="dev_str_md5">应用 MD5签名</string>
+    <string name="dev_str_version_code">应用版本号(内部判断)</string>
+    <string name="dev_str_version_name">应用版本名(用户展示)</string>
+    <string name="dev_str_apk_uri">安装包地址</string>
+    <string name="dev_str_sha1">SHA1</string>
+    <string name="dev_str_sha256">SHA256</string>
+    <string name="dev_str_first_install_time">首次安装时间</string>
+    <string name="dev_str_last_update_time">最近更新时间</string>
+    <string name="dev_str_minsdkversion">App 最低支持版本</string>
+    <string name="dev_str_targetsdkversion">App 兼容sdk版本</string>
+    <string name="dev_str_apk_length">Apk 安装包大小</string>
+    <string name="dev_str_effective">有效时间</string>
+    <string name="dev_str_iseffective">签名是否过期</string>
+    <string name="dev_str_overdue">已过期</string>
+    <string name="dev_str_notoverdue">未过期</string>
+    <string name="dev_str_principal">证书发布方</string>
+    <string name="dev_str_version">证书版本号</string>
+    <string name="dev_str_sigalgname">证书算法名称</string>
+    <string name="dev_str_sigalgoid">证书算法OID</string>
+    <string name="dev_str_dercode">证书DER编码</string>
+    <string name="dev_str_serialnumber">证书机器码</string>
+
 </resources>

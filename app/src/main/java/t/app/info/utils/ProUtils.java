@@ -3,6 +3,8 @@ package t.app.info.utils;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.google.gson.GsonBuilder;
+
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import dev.DevUtils;
+import dev.utils.app.logger.DevLogger;
 import dev.utils.app.share.IPreference;
 import dev.utils.app.share.SharedUtils;
 import t.app.info.base.BaseApplication;
@@ -27,10 +30,26 @@ public final class ProUtils {
     private ProUtils(){
     }
 
+    // 日志 TAG
+    private static final String TAG = ProUtils.class.getSimpleName();
     // 判断是否获取app列表中
     private static boolean isGetAppsIng = false;
     /** 保存APP信息 */
     public static final HashMap<AppInfoBean.AppType, ArrayList<AppInfoBean>> sMapAppInfos = new HashMap<>();
+
+    /**
+     * 转换String
+     * @param obj
+     * @return
+     */
+    public static String toJsonString(Object obj){
+        try {
+            return new GsonBuilder().setPrettyPrinting().create().toJson(obj);
+        } catch (Exception e){
+            DevLogger.eTag(TAG, e, "toJsonString");
+        }
+        return null;
+    }
 
     /**
      * 重置复位
