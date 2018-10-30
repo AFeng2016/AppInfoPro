@@ -2,7 +2,7 @@ package t.app.info.beans.item;
 
 import java.io.File;
 
-import t.app.info.beans.AppInfoBean;
+import dev.utils.app.info.AppInfoBean;
 
 /**
  * detail: 文件资源 Item

@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import dev.DevUtils;
+import dev.utils.app.info.AppInfoBean;
 import dev.utils.app.logger.DevLogger;
 import dev.utils.app.share.IPreference;
 import dev.utils.app.share.SharedUtils;
 import t.app.info.base.BaseApplication;
-import t.app.info.beans.AppInfoBean;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
 

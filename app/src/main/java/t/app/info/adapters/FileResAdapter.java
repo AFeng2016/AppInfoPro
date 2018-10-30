@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import dev.utils.app.info.AppInfoBean;
 import dev.utils.app.toast.ToastUtils;
 import dev.utils.common.FileUtils;
 import t.app.info.R;
 import t.app.info.activitys.ApkDetailsActivity;
-import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.item.FileResItem;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;

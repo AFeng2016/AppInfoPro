@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import dev.utils.app.info.AppInfoBean;
 import t.app.info.R;
 import t.app.info.activitys.AppDetailsActivity;
-import t.app.info.beans.AppInfoBean;
 import t.app.info.utils.config.KeyConstants;
 import t.app.info.utils.config.NotifyConstants;
 

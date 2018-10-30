@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 
 import dev.DevUtils;
+import dev.utils.app.info.KeyValueBean;
 import t.app.info.beans.item.DeviceInfoItem;
 
 /**

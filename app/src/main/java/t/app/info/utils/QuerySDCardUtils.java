@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import dev.utils.app.SDCardUtils;
+import dev.utils.app.info.AppInfoBean;
 import dev.utils.app.logger.DevLogger;
 import dev.utils.common.DevCommonUtils;
 import dev.utils.common.FileUtils;
 import t.app.info.base.BaseApplication;
-import t.app.info.beans.AppInfoBean;
 import t.app.info.beans.item.FileResItem;
 import t.app.info.utils.config.NotifyConstants;
 
